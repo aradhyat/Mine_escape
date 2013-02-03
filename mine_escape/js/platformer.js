@@ -162,7 +162,7 @@ Q.Sprite.extend("Tower", {
             socket.emit("game_over");
             Q.stageScene("endGame",1, { label: "You Won!" });
             collision.obj.destroy();
-            Q("Player_other").first.destroy();          
+            Q("Player_other").first().destroy();          
       }
     });
   }
