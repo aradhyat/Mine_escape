@@ -91,10 +91,12 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         waiting=[]
         total_Players=len(self.socket.server.sockets)
         for sessid, socket in self.socket.server.sockets.iteritems():
-            if socket.session['con']==False:
-                waiting.append(socket.session['player_name'])
-            else:
-                playing.append(socket.session['player_name'])
+            print socket.session.keys()
+            if 'con' in socket.session.keys():
+                if socket.session['con']==False:
+                    waiting.append(socket.session['player_name'])
+                else:
+                    playing.append(socket.session['player_name'])
 
         data={
             'playing':playing,
