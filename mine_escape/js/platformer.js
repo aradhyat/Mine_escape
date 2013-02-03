@@ -230,16 +230,16 @@ Q.scene("level1",function(stage) {
 
     var player_2 = stage.insert(new Q.Player_other({ x:data.xx, y:data.yy }));
 
-   
     stage.add("viewport").follow(player);
 
+     stage.insert(new Q.Tower({ x: 700, y: 0 })); //180 50
+
+    if(data.role=='player_1'){
 
     for (var i=0;i<25;i++){
 
       var xo= Math.floor( Math.random()*1200);
       var yo =Math.floor(Math.random()*1800);
-
-      if(data.role=='player_1'){
 
             stage.insert(new Q.Diamond({ x: xo, y: yo ,id:i}));
             var ss={
@@ -260,8 +260,6 @@ Q.scene("level1",function(stage) {
     });
 
 
-
-    stage.insert(new Q.Tower({ x: 700, y: 0 })); //180 50
 
     });
 
