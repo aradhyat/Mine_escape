@@ -161,8 +161,6 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
                 self.socket.session['player_role']='player_1'
                 self.emit("waiting_for_game")
 
-        print self.socket.server.sockets
-
         self.broadcast_event("new_players",self.get_allconnects())
 
 
