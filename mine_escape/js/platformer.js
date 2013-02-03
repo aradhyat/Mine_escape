@@ -86,8 +86,15 @@ Q.Sprite.extend("Player",{
     this.add("animation");
     this.add('2d, platformerControls');
 
-    
+    this.on("hit.sprite",function(collision) {
 
+      if(collision.obj.isA("Tower")) {
+            socket.emit("game_over");
+            Q.stageScene("endGame",1, { label: "You Won!" });      
+      }
+    });
+
+  
     this.on("moving",function(){
 
       socket.emit("new_player_pos",this.p);
@@ -154,14 +161,6 @@ Q.Sprite.extend("Player_other",{
 Q.Sprite.extend("Tower", {
   init: function(p) {
     this._super(p, { sheet: 'tower' });
-
-    this.on("hit.sprite",function(collision) {
-
-      if(collision.obj.isA("Player")) {
-            socket.emit("game_over");
-            Q.stageScene("endGame",1, { label: "You Won!" });       
-      }
-    });
   }
 });
 

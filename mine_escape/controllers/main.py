@@ -91,7 +91,6 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         waiting=[]
         total_Players=len(self.socket.server.sockets)
         for sessid, socket in self.socket.server.sockets.iteritems():
-            print socket.session.keys()
             if 'con' in socket.session.keys():
                 if socket.session['con']==False:
                     waiting.append(socket.session['player_name'])
@@ -157,6 +156,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         self.emit_to_other("new_player_pos",data)
 
     def on_game_over(self):
+        print "game over"
         self.emit_to_other("game_over",'');
 
     def on_new_enemy_pos(self,data):
