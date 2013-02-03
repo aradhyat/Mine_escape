@@ -67,19 +67,20 @@ class RoomsMixin(object):
 class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
     def __init__(self, *args, **kwargs):
         super(GameNamespace, self).__init__(*args, **kwargs)
-        self.socket.session['player_name']=''
-        self.socket.session['player_role']=''
-        self.socket.session['con']=False
-        self.socket.session['score']=0
 
     def recv_disconnect(self):
         if self.socket.session['con']!=False:
             self.emit_to_other("abort_game","Game aborted byt other user.")
         
+        print "disconnected"
         self.broadcast_event("new_players",self.get_allconnects())
         self.disconnect()
 
     def recv_connect(self):
+        self.socket.session['player_name']=''
+        self.socket.session['player_role']=''
+        self.socket.session['con']=False
+        self.socket.session['score']=0
         print "connected"
         gevent.sleep(3)
         self.broadcast_event("new_players",self.get_allconnects())
