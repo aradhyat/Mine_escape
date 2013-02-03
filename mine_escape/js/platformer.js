@@ -209,8 +209,9 @@ Q.Sprite.extend("Diamond",{
 
 
 socket.on("abort_game",function(data){
-  Q.stageScene("endGame",1, { label: data });
-})
+    alert("Game aborted by other user.");
+    location.reload(true);
+});
 
 
 
