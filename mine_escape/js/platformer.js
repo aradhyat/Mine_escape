@@ -132,7 +132,7 @@ Q.Sprite.extend("Player_other",{
     });
 
     socket.on("game_over",function(){
-        Q("Player").first.destroy();
+        Q("Player").first().destroy();
         Q.stageScene("endGame",1, { label: "You lost!" });    
     });
 
