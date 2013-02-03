@@ -89,6 +89,9 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         self.broadcast_event("new_players",self.get_allconnects())
         self.disconnect()
 
+    def recv_connect(self):
+        self.broadcast_event("new_players",self.get_allconnects())
+
 
     def get_allconnects(self):
         playing=[]
