@@ -187,8 +187,9 @@ Q.Sprite.extend("Diamond",{
     });
 
     socket.on("destroy_diamond",function(data){
-
+      console.log(data);
       Q(data.id).destroy();
+
       p2_score++;
       var new_score=score+"";
       var new_pscore=p2_score/25+"";
