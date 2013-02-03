@@ -56,8 +56,6 @@ window.onbeforeunload = function(e) {
 
 
 socket.on("new_players",function(data){
-
-    console.log(data);
     
     $("#no_waiting_players").html("Total Players : "+data.players);
     $("#waiting_players").html("");
@@ -91,11 +89,10 @@ Q.Sprite.extend("Player",{
     this.on("hit.sprite",function(collision) {
 
       if(collision.obj.isA("Tower")) {
-
-            socket.emit("game_over");
             Q.stageScene("endGame",1, { label: "You Won!" });
             this.destroy();
             Q("Player_other").first.destroy();
+            socket.emit("game_over");
       
       }
     });
