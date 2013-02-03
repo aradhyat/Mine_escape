@@ -9,7 +9,6 @@ from pyramid.paster import (
     setup_logging,
     )
 
-from atracker.models.models import *
 def usage(argv):
     cmd = os.path.basename(argv[0])
     print('usage: %s <config_uri>\n'

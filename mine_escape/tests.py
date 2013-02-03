@@ -3,7 +3,6 @@ import transaction
 
 from pyramid import testing
 
-from atracker.models.models import DBSession
 
 class TestMyView(unittest.TestCase):
     def setUp(self):

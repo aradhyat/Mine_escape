@@ -18,8 +18,6 @@ function sname(){
 window.addEventListener("load",function() {
 
 
-
-
 levels=['level1','level2'];
 current = 0;
 score = 0;
@@ -58,6 +56,8 @@ window.onbeforeunload = function(e) {
 
 
 socket.on("new_players",function(data){
+
+    console.log(data);
     
     $("#no_waiting_players").html("Total Players : "+data.players);
     $("#waiting_players").html("");
@@ -189,21 +189,11 @@ Q.Sprite.extend("Diamond",{
 
     socket.on("destroy_diamond",function(data){
 
-      var enemys=Q("Diamond");
       Q(data.id).destroy();
-
-      /*
-      
-      Q._each(enemys.items,function(en,i){
-        if(enemys.items[i].p.wh==data.wh){
-          enemys.items[i].destroy();
-          p2_score++;
-          var new_score=score+"";
-          var new_pscore=p2_score/25+"";
-          Q.stageScene("hud",3, {p1score:new_score,p2score:new_pscore});
-        }
-      });
-*/
+      p2_score++;
+      var new_score=score+"";
+      var new_pscore=p2_score/25+"";
+      Q.stageScene("hud",3, {p1score:new_score,p2score:new_pscore});
     
 
     });

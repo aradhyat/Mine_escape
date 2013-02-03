@@ -10,8 +10,7 @@ from pyramid.renderers import render
 from pyramid.events import *
 import pyramid.httpexceptions as exc
 import os
-from atracker.models.models import *
-from atracker.controllers.main import *
+from mine_escape.controllers.main import *
 
 from gevent import monkey
 

@@ -11,7 +11,6 @@ import hashlib
 from pyramid.response import Response
 from pyramid.view import view_config
 from sqlalchemy.exc import DBAPIError
-from atracker.models.models import *
 import mimetypes
 import string
 import random
@@ -70,15 +69,19 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         super(GameNamespace, self).__init__(*args, **kwargs)
         self.socket.session['player_name']=''
         self.socket.session['player_role']=''
-        self.socket.session['connected_to']=False
+        self.socket.session['con']=False
         self.socket.session['score']=0
 
     def recv_disconnect(self):
-        self.emit_to_other("abort_game","Game aborted byt other user.")
+        if self.socket.session['con']!=False:
+            self.emit_to_other("abort_game","Game aborted byt other user.")
+        
         self.broadcast_event("new_players",self.get_allconnects())
         self.disconnect()
 
     def recv_connect(self):
+        print "connected"
+        gevent.sleep(3)
         self.broadcast_event("new_players",self.get_allconnects())
 
 
@@ -87,7 +90,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         waiting=[]
         total_Players=len(self.socket.server.sockets)
         for sessid, socket in self.socket.server.sockets.iteritems():
-            if socket.session['connected_to']==False:
+            if socket.session['con']==False:
                 waiting.append(socket.session['player_name'])
             else:
                 playing.append(socket.session['player_name'])
@@ -101,28 +104,22 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         return data
 
     def emit_to_other(self,event,msg):
-
-        for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket.session['connected_to']==socket.session['connected_to'] and self.socket!=socket:
-                pkt=dict(type="event",
-                    name=event,
-                    args=msg,
-                    endpoint=self.ns_name
-                    )
-                if event=='destroy_diamond': print pkt
-                socket.send_packet(pkt)
-
+        pkt = dict(type="event",
+                   name=event,
+                   args=msg,
+                   endpoint=self.ns_name)
+        self.socket.session['con'].send_packet(pkt)
 
     def on_setname(self, name):
         self.socket.session['player_name']=name
         for sessid, socket in self.socket.server.sockets.iteritems():
-            if socket.session['player_role']=='player_1' and socket.session['connected_to']==False and socket.session['player_name']!='' and self.socket!=socket:
+            if socket.session['player_role']=='player_1' and socket.session['con']==False and self.socket!=socket:
                
                 self.socket.session['player_role']='player_2'
-               
-                roomname=''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(5))
-                self.socket.session['connected_to']=roomname
-                socket.session['connected_to']=roomname
+                
+                self.socket.session['con']=socket
+                socket.session['con']=self.socket
+
 
                 p1={
                     'player_name':self.socket.session['player_name'],
@@ -180,7 +177,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
 from pyramid.response import Response
 def socketio_service(request):
     socketio_manage(request.environ,
-                    {'/chat': ChatNamespace,'/game':GameNamespace},
+                    {'/game':GameNamespace},
                     request=request)
 
 
