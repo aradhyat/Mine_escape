@@ -65,129 +65,6 @@ class RoomsMixin(object):
 
 
 
-class ChatNamespace(BaseNamespace, RoomsMixin, BroadcastMixin):
-
-    def __init__(self, *args, **kwargs):
-        super(ChatNamespace, self).__init__(*args, **kwargs)
-        self.socket.session['nickname']=''
-        self.socket.session['pinfo']={'name':'default','connected':False,'x':0,'y':0}
-
-    def on_setname(self, nickname):
-        self.environ.setdefault('nicknames', []).append(nickname)
-        self.socket.session['nickname'] = nickname
-        self.broadcast_event('announcement', '%s has connected' % nickname)
-        self.broadcast_event('nicknames', self.environ['nicknames'])
-        # Just have them join a default-named room
-
-    def recv_connect(self):
-       ss=self.socket.session['pinfo']
-       print ss
-       for sessid, socket in self.socket.server.sockets.iteritems():
-        if socket.session['pinfo']['name']=='player_1' and self.socket!=socket:
-            ss['name']='player_2'
-            ss['connected']=True
-            ss['x']=600
-            ss['y']=100
-            ss['xx']=410
-            ss['yy']=90
-            socket.session['pinfo']['connected']=True
-
-            data={
-            'name':socket.session['pinfo']['name'],
-            'x':socket.session['pinfo']['x'],
-            'y':socket.session['pinfo']['y'],
-            'xx':socket.session['pinfo']['xx'],
-            'yy':socket.session['pinfo']['yy']
-            }
-            
-            self.emit("user_connect",ss)
-            pkt = dict(type="event",
-                   name="user_connect",
-                   args=data,
-                   endpoint=self.ns_name)
-            socket.send_packet(pkt)
-        
-        else:
-            ss['name']='player_1'
-            ss['x']=410
-            ss['y']=90
-            ss['xx']=600
-            ss['yy']=100
-
-
-    def on_user_message(self, msg):
-        self.emit_to_room(self.socket.session['roomname'], 'chat', self.socket.session['nickname']+" : "+msg)
-
-    def on_join_room(self, room):
-    	self.join(room)
-        online_users=[]
-        for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket.session['roomname']==socket.session['roomname']:
-                online_users.append(socket.session['nickname'])
-
-        self.emit_to_room(self.socket.session['roomname'],'online_users',self.socket.session['nickname'])
-
-    def on_destroy(self, msg):
-        print msg
-
-    def on_change_enemy(self,msg):
-        print msg
-        self.broadcast_event("new_enemy_pos",msg)
-
-    def on_player_die(self):
-        for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket!=socket:
-                pkt=dict(type="event",
-                    name="destroy_player",
-                    args='',
-                    endpoint=self.ns_name
-                    )
-                socket.send_packet(pkt)
-
-    def on_enemy_die(self,msg):
-        for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket!=socket:
-                pkt=dict(type="event",
-                    name="destroy_enemy",
-                    args=msg,
-                    endpoint=self.ns_name
-                    )
-                print pkt
-                socket.send_packet(pkt)
-
-    def on_win_game(self):
-        for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket!=socket:
-                pkt=dict(type="event",
-                    name="game_over",
-                    args='',
-                    endpoint=self.ns_name
-                    )
-                socket.send_packet(pkt)
-
-
-
-    def on_moving(self,msg):
-
-        for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket!=socket:
-                pkt=dict(type="event",
-                    name="mov",
-                    args=msg,
-                    endpoint=self.ns_name
-                    )
-                socket.send_packet(pkt)
-
-    def on_image_pos(self, pos):
-        top=pos['top']
-        left=pos['left']
-        self.emit_to_room(self.socket.session['roomname'],"new_pos",{'top':top,'left':left})
-
-
-    def recv_message(self, message):
-        print "PING!!!", message
-
-
 class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
     def __init__(self, *args, **kwargs):
         super(GameNamespace, self).__init__(*args, **kwargs)
@@ -208,6 +85,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
                     endpoint=self.ns_name
                     )
                 socket.send_packet(pkt)
+            break
         self.broadcast_event("new_players",self.get_allconnects())
         self.disconnect()
 
