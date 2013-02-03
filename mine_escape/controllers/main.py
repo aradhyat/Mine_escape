@@ -85,7 +85,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
                     endpoint=self.ns_name
                     )
                 socket.send_packet(pkt)
-            break
+                break
         self.broadcast_event("new_players",self.get_allconnects())
         self.disconnect()
 
