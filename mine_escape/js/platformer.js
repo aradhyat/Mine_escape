@@ -132,7 +132,6 @@ Q.Sprite.extend("Player_other",{
     });
 
     socket.on("game_over",function(){
-        Q("Player").first().destroy();
         Q.stageScene("endGame",1, { label: "You lost!" });    
     });
 
@@ -160,9 +159,7 @@ Q.Sprite.extend("Tower", {
 
       if(collision.obj.isA("Player")) {
             socket.emit("game_over");
-            Q.stageScene("endGame",1, { label: "You Won!" });
-            collision.obj.destroy();
-            Q("Player_other").first().destroy();          
+            Q.stageScene("endGame",1, { label: "You Won!" });       
       }
     });
   }
@@ -232,7 +229,7 @@ Q.scene("level1",function(stage) {
 
     stage.add("viewport").follow(player);
 
-     stage.insert(new Q.Tower({ x: 700, y: 0 })); //180 50
+    stage.insert(new Q.Tower({ x: 700, y: 0 })); //180 50
 
     if(data.role=='player_1'){
 
@@ -278,6 +275,9 @@ Q.scene('endGame',function(stage) {
                                                   label: "Play Again" }))         
   var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, color:'white',
                                                    label: stage.options.label }));
+
+  Q("Player").first().destroy();
+  Q("Player_other").first().destroy();
 
 
   button.on("click",function() {
