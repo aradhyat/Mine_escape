@@ -74,18 +74,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         self.socket.session['score']=0
 
     def recv_disconnect(self):
-
-        for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket.session['connected_to']==socket.session['connected_to'] and socket.session['connected_to']!=False and self.socket.session['connected_to']!=False and self.socket!=socket:
-                socket.session['connected_to']=False
-                socket.session['player_role']='player_1'
-                pkt=dict(type="event",
-                    name="abort_game",
-                    args="Game aborted by other user.",
-                    endpoint=self.ns_name
-                    )
-                socket.send_packet(pkt)
-                break
+        self.emit_to_other("abort_game","Game aborted byt other user.")
         self.broadcast_event("new_players",self.get_allconnects())
         self.disconnect()
 
