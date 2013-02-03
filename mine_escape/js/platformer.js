@@ -86,16 +86,7 @@ Q.Sprite.extend("Player",{
     this.add("animation");
     this.add('2d, platformerControls');
 
-    this.on("hit.sprite",function(collision) {
-
-      if(collision.obj.isA("Tower")) {
-            Q.stageScene("endGame",1, { label: "You Won!" });
-            this.destroy();
-            Q("Player_other").first.destroy();
-            socket.emit("game_over");
-      
-      }
-    });
+    
 
     this.on("moving",function(){
 
@@ -141,6 +132,7 @@ Q.Sprite.extend("Player_other",{
     });
 
     socket.on("game_over",function(){
+        Q("Player").first.destroy();
         Q.stageScene("endGame",1, { label: "You lost!" });    
     });
 
@@ -163,6 +155,16 @@ Q.Sprite.extend("Player_other",{
 Q.Sprite.extend("Tower", {
   init: function(p) {
     this._super(p, { sheet: 'tower' });
+
+    this.on("hit.sprite",function(collision) {
+
+      if(collision.obj.isA("Player")) {
+            socket.emit("game_over");
+            Q.stageScene("endGame",1, { label: "You Won!" });
+            collision.obj.destroy();
+            Q("Player_other").first.destroy();          
+      }
+    });
   }
 });
 
