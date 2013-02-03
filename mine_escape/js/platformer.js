@@ -39,7 +39,8 @@ Q.animations('player', {
 
 
  WEB_SOCKET_SWF_LOCATION = "/data/WebSocketMain.swf";
- WEB_SOCKET_DEBUG = true; 
+ WEB_SOCKET_DEBUG = true;
+
 
 
 var player_details='';
@@ -47,7 +48,7 @@ var player_details='';
 
 socket.on("waiting_for_game",function(){
   document.getElementById("wait_image").src='/images/wait.gif';
-});
+})
 
 
 window.onbeforeunload = function(e) {
@@ -89,12 +90,13 @@ Q.Sprite.extend("Player",{
     this.on("hit.sprite",function(collision) {
 
       if(collision.obj.isA("Tower")) {
+
             socket.emit("game_over");
-            Q.stageScene("endGame",1, { label: "You Won!" });      
+            Q.stageScene("endGame",1, { label: "You Won!" });
+            this.destroy();      
       }
     });
 
-  
     this.on("moving",function(){
 
       socket.emit("new_player_pos",this.p);
@@ -138,8 +140,9 @@ Q.Sprite.extend("Player_other",{
 
     });
 
-    socket.on("game_over",function(){
-        Q.stageScene("endGame",1, { label: "You lost!" });    
+    socket.on("game_over",function(data){
+        Q.stageScene("endGame",1, { label: "You lost!" });
+        Q("Tower").destroy();    
     });
 
   },
@@ -161,6 +164,7 @@ Q.Sprite.extend("Player_other",{
 Q.Sprite.extend("Tower", {
   init: function(p) {
     this._super(p, { sheet: 'tower' });
+
   }
 });
 
@@ -183,14 +187,19 @@ Q.Sprite.extend("Diamond",{
     });
 
     socket.on("destroy_diamond",function(data){
-      console.log(data);
-      Q(data.id).destroy();
 
-      p2_score++;
-      var new_score=score+"";
-      var new_pscore=p2_score/25+"";
-      Q.stageScene("hud",3, {p1score:new_score,p2score:new_pscore});
-    
+       var enemys=Q("Diamond");
+
+      Q._each(enemys.items,function(en,i){
+        if(enemys.items[i].p.wh==data.wh){
+          enemys.items[i].destroy();
+          p2_score++;
+          var new_score=score+"";
+          var new_pscore=p2_score/25+"";
+          Q.stageScene("hud",3, {p1score:new_score,p2score:new_pscore});
+        }
+      });
+
 
     });
 
@@ -200,9 +209,8 @@ Q.Sprite.extend("Diamond",{
 
 
 socket.on("abort_game",function(data){
-  alert("Game aborted by other user.");
-  location.reload(true);
-});
+  Q.stageScene("endGame",1, { label: data });
+})
 
 
 
@@ -213,6 +221,7 @@ Q.scene("level1",function(stage) {
    document.getElementById("wait_image").style.display='none';
 
    player_details=data;
+
   
 
    stage.collisionLayer(new Q.TileLayer({
@@ -226,22 +235,26 @@ Q.scene("level1",function(stage) {
 
     var player_2 = stage.insert(new Q.Player_other({ x:data.xx, y:data.yy }));
 
-    stage.add("viewport").follow(player);
-
     stage.insert(new Q.Tower({ x: 700, y: 0 })); //180 50
 
-    if(data.role=='player_1'){
+   
+    stage.add("viewport").follow(player);
+
+
+    
 
     for (var i=0;i<25;i++){
 
       var xo= Math.floor( Math.random()*1200);
       var yo =Math.floor(Math.random()*1800);
 
-            stage.insert(new Q.Diamond({ x: xo, y: yo ,id:i}));
+      if(data.role=='player_1'){
+
+            stage.insert(new Q.Diamond({ x: xo, y: yo ,'wh':i}));
             var ss={
               x:xo,
               y:yo,
-              id:i
+              'wh':i
             };
             socket.emit("create_diamond",ss);
       
@@ -251,7 +264,7 @@ Q.scene("level1",function(stage) {
 
     socket.on("create_diamond",function(data){
 
-        stage.insert(new Q.Diamond({ x: data.x, y: data.y ,id:data.id}));
+        stage.insert(new Q.Diamond({ x: data.x, y: data.y ,'wh':data.wh}));
 
     });
 
@@ -269,14 +282,10 @@ Q.scene('endGame',function(stage) {
   }));
 
 
-
   var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
                                                   label: "Play Again" }))         
   var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, color:'white',
                                                    label: stage.options.label }));
-
-  Q("Player").first().destroy();
-  Q("Player_other").first().destroy();
 
 
   button.on("click",function() {
