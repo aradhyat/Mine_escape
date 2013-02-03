@@ -1,6 +1,7 @@
 // Game designed and developed by Aradhya Tulsyan and Aaron Brako @ Pyramidlabs
 
-var socket;
+
+var socket=io.connect("/game");
 
 function sname(){
     var name=window.prompt("Please enter your name.");
@@ -16,7 +17,7 @@ function sname(){
 
 window.addEventListener("load",function() {
 
-socket=io.connect("/game");
+
 
 
 levels=['level1','level2'];
