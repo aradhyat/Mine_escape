@@ -1,0 +1,85 @@
+<html>
+<head>
+	<title>Mine Escape</title>
+	<style type="text/css">
+	* {margin:0; padding:0;}
+	#rules {padding: 20px; border-radius: 10px; width:400px; font-family: 'tahoma',arial; margin:0 auto;
+		-webkit-box-shadow: 0px 0px 10px rgba(0,0,0,.4);
+   -moz-box-shadow: 0px 0px 10px rgba(0,0,0,.4);
+   box-shadow: 0px 0px 10px rgba(0,0,0,.4);}
+  h2 {padding-bottom:10px;}
+ ul {list-style-position: inside; padding:0;}
+ li { list-style-image: none; list-style-type: none; padding-bottom: 10px;}
+ .img {text-align: center; margin-bottom: 10px;margin-top: 20px;}
+ .clearfix:before,.clearfix:after{content:" ";display:table;}
+      .clearfix:after{clear:both;}
+      .clearfix{*zoom:1;} 
+      .social{
+        margin: 0 auto;
+        list-style-type: none;
+        text-align: center;
+      }
+      .social li{
+        display: inline-block;
+        *display:inline;
+        zoom:1;
+        margin-right: 10px;
+      }
+	</style>
+</head>
+<body>
+	<div class="img">
+		<img src="/images/name.jpg" alt="">
+	</div>
+	
+	<div id="rules">
+		<h2>How to Play</h2>
+		<ul>
+			<li>Wait for another player to join you, or invite a friend</li>
+			<li>The first player to reach the girl wins !</li>
+			<li>Collect Diamonds on the way to get a score boost.</li>
+			<li>Controls: Arrow Keys</li>
+		</ul>
+	</div>
+
+	<div class="img">
+		<a href="/game"><img src="/images/play.png" alt=""></a>
+	</div>
+
+	<ul class="social clearfix">
+    
+		<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://stuff.pyramidlabs.in:8080/" data-text="Mine Escape - A game built right into the browser." data-
+		via="PyramidLabsWeb">Tweet</a></li>
+
+		<li><div class="fb-like" data-href="http://stuff.pyramidlabs.in:8080/" data-send="true" data-width="350" data-show-faces="true"></div></li>		
+
+	</ul>
+
+
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=238689716245182";
+	fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+</body>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37472667-1']);
+  _gaq.push(['_setDomainName', 'pyramidlabs.in']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</html>

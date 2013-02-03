@@ -1,0 +1,5 @@
+{"player":{"sx":0,"sy":54,"cols":24,"tilew":27,"tileh":30,"frames":24},
+"enemy":{"sx":0,"sy":0,"cols":1,"tilew":30,"tileh":24,"frames":1},
+"tower":{"sx":0,"sy":24,"cols":1,"tilew":30,"tileh":30,"frames":1},
+"diamond":{"sx":0,"sy":84,"cols":1,"tilew":20,"tileh":20,"frames":1}
+}

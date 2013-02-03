@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-app>
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+<title>Mine Escape</title>
+<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script src='../../lib/quintus.js'></script>
+<script src='../../lib/quintus_sprites.js'></script>
+<script src='../../lib/quintus_scenes.js'></script>
+<script src='../../lib/quintus_input.js'></script>
+<script src='../../lib/quintus_2d.js'></script>
+<script src='../../lib/quintus_touch.js'></script>
+<script src='../../lib/quintus_ui.js'></script>
+<script src='../../lib/quintus_anim.js'></script>
+<script src='../../lib/quintus_audio.js'></script>
+<script src="./../lib/jquery.js"></script>
+<script src="/static/socket.io.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src='/js/platformer.js'></script>
+
+<style> 
+      body { padding:0px; margin:0px; }
+      .clearfix:before,.clearfix:after{content:" ";display:table;}
+      .clearfix:after{clear:both;}
+      .clearfix{*zoom:1;} 
+      .social{
+        margin: 0 auto;
+        list-style-type: none;
+        text-align: center;
+      }
+      .social li{
+        display: inline-block;
+        *display:inline;
+        zoom:1;
+        margin-right: 10px;
+      }
+      </style>
+</head>
+<body>
+
+  <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Mine Escape (beta)</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="http://www.pyramidlabs.in/contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <center>
+            <img src="" id="wait_image"/>   
+        </center>  
+        <canvas id="mine_escape" width="700px" height="600px"></canvas>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <ul class="social clearfix">
+    
+           <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://stuff.pyramidlabs.in:8080/" data-text="Mine Escape - A game built right into the browser." data-
+               via="PyramidLabsWeb">Tweet</a></li>
+    
+          <li><div class="fb-like" data-href="http://stuff.pyramidlabs.in:8080/" data-send="true" data-width="350" data-show-faces="true"></div></li>
+
+          </ul>
+        </div>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span4" ng-controller="Players">
+          <h2 id="no_waiting_players"></h2>
+        </div>
+        <div class="span4">
+          <h2>Players waiting</h2>
+          <ul id="waiting_players">
+
+          </ul>
+
+       </div>
+        <div class="span4">
+          <h2>In Game</h2>
+          <ul id="playing_players">
+
+          </ul>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Pyramidlabs 2012</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+
+
+  <div id="fb-root"></div>
+
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=238689716245182";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+  <script type="text/javascript">
+
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37472667-1']);
+  _gaq.push(['_setDomainName', 'pyramidlabs.in']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+</body>
+
+</html>
