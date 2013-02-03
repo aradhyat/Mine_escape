@@ -1,10 +1,21 @@
 // Game designed and developed by Aradhya Tulsyan and Aaron Brako @ Pyramidlabs
 
-
-window.addEventListener("load",function() {
-
 var socket=io.connect("/game");
 
+
+function sname(){
+    var name=window.prompt("Please enter your name.");
+    if(name==null || name==''){
+      alert("Please enter a proper name.");
+    }else{
+      document.getElementById("start_game_button").style.display='none';
+      socket.emit("setname",name);
+    }
+} 
+
+
+
+window.addEventListener("load",function() {
 
 levels=['level1','level2'];
 current = 0;
@@ -27,24 +38,7 @@ Q.animations('player', {
 
 
  WEB_SOCKET_SWF_LOCATION = "/data/WebSocketMain.swf";
- WEB_SOCKET_DEBUG = true;
-
-socket.on("enter_name",function(){
-  
-  function sname(){
-    var name=window.prompt("Please enter your name.");
-    if(name==null || name==''){
-      sname();
-    }else{
-      socket.emit("setname",name);
-    }
-  }
-
-  sname();
-  
-
-});
-
+ WEB_SOCKET_DEBUG = true; 
 
 
 var player_details='';
@@ -52,7 +46,7 @@ var player_details='';
 
 socket.on("waiting_for_game",function(){
   document.getElementById("wait_image").src='/images/wait.gif';
-})
+});
 
 
 window.onbeforeunload = function(e) {
@@ -217,8 +211,9 @@ Q.Sprite.extend("Diamond",{
 
 
 socket.on("abort_game",function(data){
-  Q.stageScene("endGame",1, { label: data });
-})
+  alert("Game aborted by other user.");
+  location.reload(true);
+});
 
 
 

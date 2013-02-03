@@ -38,6 +38,8 @@
       }
       </style>
 </head>
+<script type="text/javascript">
+</script>
 <body>
 
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -66,12 +68,14 @@
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
         <center>
-            <img src="" id="wait_image"/>   
+            <img src="" id="wait_image"/>  
+            <button id="start_game_button" onClick="sname()">Start game</button>
+            <p>
+             Note : Click within the game viewport to activate controls.
+            </p> 
         </center>  
         <canvas id="mine_escape" width="700px" height="600px"></canvas>
-        <p>
-          Note : Click within the game viewport to activate controls.
-        </p>
+
       </div>
 
       <div class="row">

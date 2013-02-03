@@ -108,11 +108,6 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
 
         return data
 
-
-
-    def recv_connect(self):
-        self.emit("enter_name")
-
     def emit_to_other(self,event,msg):
 
         for sessid, socket in self.socket.server.sockets.iteritems():
@@ -162,6 +157,8 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
             else :
                 self.socket.session['player_role']='player_1'
                 self.emit("waiting_for_game")
+
+        print self.socket.server.sockets
 
         self.broadcast_event("new_players",self.get_allconnects())
 
