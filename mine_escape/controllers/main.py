@@ -77,7 +77,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         self.disconnect()
 
     def recv_connect(self):
-        self.socket.session['player_name']=''
+        self.socket.session['player_name']='Name not set'
         self.socket.session['player_role']=''
         self.socket.session['con']=False
         self.socket.session['score']=0
