@@ -76,7 +76,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
     def recv_disconnect(self):
 
         for sessid, socket in self.socket.server.sockets.iteritems():
-            if self.socket.session['connected_to']==socket.session['connected_to'] and self.socket!=socket:
+            if self.socket.session['connected_to']==socket.session['connected_to'] and socket.session['connected_to']!=False and self.socket.session['connected_to']!=False and self.socket!=socket:
                 socket.session['connected_to']=False
                 socket.session['player_role']='player_1'
                 pkt=dict(type="event",
