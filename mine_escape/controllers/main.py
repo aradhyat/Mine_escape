@@ -90,13 +90,14 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
     def get_allconnects(self):
         playing=[]
         waiting=[]
-        total_Players=len(self.socket.server.sockets)
+        total_Players=0
         for sessid, socket in self.socket.server.sockets.iteritems():
             if 'con' in socket.session.keys():
                 if socket.session['con']==False:
                     waiting.append(socket.session['player_name'])
                 else:
                     playing.append(socket.session['player_name'])
+                total_Players=total_Players+1
 
         data={
             'playing':playing,
