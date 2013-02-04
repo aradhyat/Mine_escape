@@ -8,7 +8,6 @@ function sname(){
     if(name==null || name==''){
       alert("Please enter a proper name.");
     }else{
-      document.getElementById("start_game_button").style.display='none';
       socket.emit("setname",name);
     }
 } 
@@ -47,8 +46,13 @@ var player_details='';
 
 
 socket.on("waiting_for_game",function(){
+  document.getElementById("start_game_button").style.display='none';
   document.getElementById("wait_image").src='/images/wait.gif';
-})
+});
+
+socket.on("not_good",function(){
+  alert("Not a good name");
+});
 
 
 window.onbeforeunload = function(e) {

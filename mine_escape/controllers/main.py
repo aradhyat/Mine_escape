@@ -114,6 +114,11 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         self.socket.session['con'].send_packet(pkt)
 
     def on_setname(self, name):
+
+        if bleach.clean(name)!=name:
+            self.emit("not_good")
+            return
+
         self.socket.session['player_name']=bleach.clean(name)
         for sessid, socket in self.socket.server.sockets.iteritems():
             if 'player_role' in socket.session.keys():
