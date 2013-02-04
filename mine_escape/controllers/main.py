@@ -115,15 +115,16 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
     def on_setname(self, name):
         self.socket.session['player_name']=name
         for sessid, socket in self.socket.server.sockets.iteritems():
-            if socket.session['player_role']=='player_1' and socket.session['con']==False and self.socket!=socket:
+            if 'player_role' in socket.session.keys():
+                if socket.session['player_role']=='player_1' and socket.session['con']==False and self.socket!=socket:
                
-                self.socket.session['player_role']='player_2'
+                    self.socket.session['player_role']='player_2'
                 
-                self.socket.session['con']=socket
-                socket.session['con']=self.socket
+                    self.socket.session['con']=socket
+                    socket.session['con']=self.socket
 
 
-                p1={
+                    p1={
                     'player_name':self.socket.session['player_name'],
                     'player_2_name':socket.session['player_name'],
                     'role':'player_1',
@@ -131,9 +132,9 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
                     'y':1980,
                     'xx':1090,
                     'yy':1980
-                }
+                    }
 
-                p2={
+                    p2={
                     'player_name':socket.session['player_name'],
                     'player_2_name':self.socket.session['player_name'],
                     'role':'player_2',
@@ -141,13 +142,13 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
                     'y':1980,
                     'xx':290,
                     'yy':1980
-                }
+                    }
 
-                self.emit("new_game",p1)
-                self.emit_to_other("new_game",p2)
-            else :
-                self.socket.session['player_role']='player_1'
-                self.emit("waiting_for_game")
+                    self.emit("new_game",p1)
+                    self.emit_to_other("new_game",p2)
+                else :
+                    self.socket.session['player_role']='player_1'
+                    self.emit("waiting_for_game")
 
         self.broadcast_event("new_players",self.get_allconnects())
 
