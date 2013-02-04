@@ -14,6 +14,7 @@ from sqlalchemy.exc import DBAPIError
 import mimetypes
 import string
 import random
+import bleach
 
 from gevent import monkey; monkey.patch_all()
 import gevent
@@ -113,7 +114,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin, RoomsMixin):
         self.socket.session['con'].send_packet(pkt)
 
     def on_setname(self, name):
-        self.socket.session['player_name']=name
+        self.socket.session['player_name']=bleach.clean(name)
         for sessid, socket in self.socket.server.sockets.iteritems():
             if 'player_role' in socket.session.keys():
                 if socket.session['player_role']=='player_1' and socket.session['con']==False and self.socket!=socket:

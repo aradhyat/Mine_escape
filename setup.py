@@ -18,7 +18,6 @@ requires = [
     'pyramid_beaker',
     'pyramid_mailer',
     'beautifulsoup4',
-    'mailsnake',
     'formencode',
     'pyDNS',
     'requests',
@@ -26,8 +25,8 @@ requires = [
     'pystache',
     'html5lib',
     'python-dateutil',
-    'tvdb_api',
-    'recaptcha-client'
+    'recaptcha-client',
+    'bleach'
     ]
 
 setup(name='mine_escape',
